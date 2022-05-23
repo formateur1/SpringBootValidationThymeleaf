@@ -2,7 +2,6 @@ package com.inti.SpringBootValidationThymeleaf.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,23 +21,17 @@ import lombok.RequiredArgsConstructor;
 @Table
 @Data
 @NoArgsConstructor @RequiredArgsConstructor @AllArgsConstructor
-public class Utilisateur
+public class Role
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private @NonNull String nom;
-	private String prenom;
-	@Column(unique = true)
-	private String username;
-	private String email;
-	private String mdp;
-	private String telephone;
+	private @NonNull String nomRole;
 	
 	@ManyToMany
 	@JoinTable(name = "Utilisateur_Role",
-				joinColumns = @JoinColumn(name = "id_utilisateur"),
-				inverseJoinColumns = @JoinColumn(name = "id_role"))
+				joinColumns = @JoinColumn(name = "id_role"),
+				inverseJoinColumns = @JoinColumn(name = "id_utilisateur"))
 	List<Utilisateur> listeUtilisateur;
 
 }
