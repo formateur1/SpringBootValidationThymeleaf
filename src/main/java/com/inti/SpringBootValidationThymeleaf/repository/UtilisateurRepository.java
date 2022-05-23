@@ -8,5 +8,5 @@ import com.inti.SpringBootValidationThymeleaf.model.Utilisateur;
 @Repository
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer>
 {
-
+	Utilisateur findByUsernameOrEmail(String username, String email);
 }
