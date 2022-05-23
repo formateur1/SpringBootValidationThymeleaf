@@ -1,7 +1,12 @@
 package com.inti.SpringBootValidationThymeleaf.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,19 +30,41 @@ public class MainController
 	}
 	
 	@GetMapping("/creerUtilisateur")
-	public String creerUtilisateur()
+	public String creerUtilisateur(Utilisateur utilisateur)
 	{
 		
 		return "creerUtilisateur";
 	}
 	
-	@PostMapping("/saveUser")
-	public String saveUser(Utilisateur user)
+	@PostMapping("/creerUtilisateur")
+	public String saveUser(@Valid Utilisateur utilisateur, BindingResult br)
 	{
-		log.info("user : " + user);
+		for (FieldError fe : br.getFieldErrors())
+		{
+			System.out.println(fe);
+		}
+		
+		if(br.hasErrors())
+		{
+			return "redirect:/creerUtilisateur";
+		}
+		
+//		String nom = utilisateur.getNom();
+		
+//		if(nom.length() < 3 && nom.length() > 100)
+//		{
+//			return "redirect:/creerUtilisateur";
+//		}
+		
+		log.info("user : " + utilisateur);
+		
+		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+		String mdpCrypte = b.encode(utilisateur.getMdp());
+		
+		utilisateur.setMdp(mdpCrypte);
 
 		
-		utilisateurRepository.save(user);
+		utilisateurRepository.save(utilisateur);
 		
 		return "redirect:/listeUtilisateur";
 	}
