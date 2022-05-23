@@ -21,8 +21,9 @@ public class SpringBootConfiguration
 	{
 		http
 		.authorizeRequests()
+		.antMatchers("/creerUtilisateur", "/saveUser").permitAll()
 		//.antMatchers("/admin/**").hasRole("ADMIN")
-		.antMatchers("/helloUser").hasRole("USER")
+//		.antMatchers("/helloUser").hasRole("USER")
 		.anyRequest().authenticated()
 		.and()
 		.formLogin();
